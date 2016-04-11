@@ -18,3 +18,10 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
           [applications: [:bugsnex]]
         end
 
+
+## Configuration
+
+```elixir
+config :bugsnex, :otp_app, :your_app_name
+config :bugsnex, :api_key, "your_api_key"
+```
