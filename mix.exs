@@ -7,6 +7,7 @@ defmodule Bugsnex.Mixfile do
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     elixirc_paths: elixirc_paths(Mix.env),
      deps: deps]
   end
 
@@ -14,8 +15,11 @@ defmodule Bugsnex.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :httpoison, :poison]]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Dependencies can be Hex packages:
   #
@@ -27,6 +31,10 @@ defmodule Bugsnex.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:httpoison, "~> 0.8.3"},
+      {:poison, "~> 1.5 or ~> 2.0"}, # to be compatible with phoenix_ecto
+      {:bypass, "~> 0.5.1", only: :test},
+    ]
   end
 end
