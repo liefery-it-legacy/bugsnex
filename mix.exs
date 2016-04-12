@@ -15,7 +15,8 @@ defmodule Bugsnex.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison, :poison]]
+    [mod: {Bugsnex, []},
+      applications: [:logger, :httpoison, :poison]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]

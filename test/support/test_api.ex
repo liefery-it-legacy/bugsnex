@@ -9,6 +9,13 @@ defmodule Bugsnex.TestApi do
   end
 
   def send_notice(notice) do
+    [event] = notice.events
+    [exception_data] = event.exceptions
+    # if the message of the first exception is "raise_local_error"
+    # raise an exception (for testing error case)
+    if exception_data.message == "raise_local_error" do
+      raise "Expected Error"
+    end
     Agent.get(__MODULE__, fn subscribers -> notify_subscribers(subscribers, notice) end)
   end
 
