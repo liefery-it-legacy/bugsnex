@@ -36,4 +36,10 @@ defmodule Bugsnex.NoticeTest do
 
   end
 
+  test "new notice contains the app data" do
+    notice = Notice.new(@exception, @stacktrace)
+    [event] =  notice.events
+    assert event.app.releaseStage == "test_release_stage"
+  end
+
 end

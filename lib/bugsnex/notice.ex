@@ -3,6 +3,10 @@ defmodule Bugsnex.Notice do
 
   @payload_version "2"
   @api_key Application.get_env(:bugsnex, :api_key)
+  @release_stage Application.get_env(:bugsnex, :release_stage)
+  @app %{
+    releaseStage: @release_stage
+  }
 
   defstruct apiKey: @api_key,
     notifier: %{
@@ -14,7 +18,6 @@ defmodule Bugsnex.Notice do
     context: nil,
     severity: "error",
     user: nil,
-    app: nil,
     device: nil,
     metaData: nil
 
@@ -31,6 +34,7 @@ defmodule Bugsnex.Notice do
   def event_data(exception, stacktrace) do
     %{
       payloadVersion: @payload_version,
+      app: @app,
       exceptions: [%{
                       errorClass: exception.__struct__,
                       message: Exception.message(exception),
