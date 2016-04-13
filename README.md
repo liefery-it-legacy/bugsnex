@@ -1,6 +1,6 @@
 # Bugsnex
 
-**TODO: Add description**
+API client and logger for Bugsnag
 
 ## Installation
 
@@ -24,4 +24,13 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 ```elixir
 config :bugsnex, :otp_app, :your_app_name
 config :bugsnex, :api_key, "your_api_key"
+config :bugsnex, :release_stage, "staging"
+config :bugsnex, :use_logger, true
+
 ```
+
+## Usage
+Once configured, use `Bugsnex.notice(exception)` or `Bugsnex.notice(exception,stacktrace)` to send errors to Bugsnag.
+
+If `use_logger` is set to `true`, an [error logger](http://erlang.org/doc/man/error_logger.html) event handler is added
+and [SASL](http://erlang.org/doc/apps/sasl/error_logging.html) compliant errors are sent to Bugsnag.
