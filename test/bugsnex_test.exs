@@ -34,4 +34,23 @@ defmodule BugsnexTest do
     exception = %ArgumentError{message: "raise_local_error"}
     Bugsnex.notify(exception)
   end
+
+  test "notify puts the calling processes metadata into the notice" do
+    Bugsnex.put_metadata(%{user: %{id: 678}})
+    exception = %ArgumentError{message: "bad!!"}
+    Bugsnex.notify(exception)
+    assert_receive {:notice_sent, notice}
+    [event] = notice.events
+    assert event.user == %{id: 678}
+  end
+
+
+  test "setting and getting the metadata" do
+    Bugsnex.put_metadata(%{user: 123})
+    spawn_link fn ->
+      Bugsnex.put_metadata(%{user: 678})
+      assert Bugsnex.get_metadata.user == 678
+    end
+    assert Bugsnex.get_metadata.user == 123
+  end
 end

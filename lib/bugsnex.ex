@@ -21,16 +21,31 @@ defmodule Bugsnex do
   end
 
   def notify(exception, stacktrace) do
-    Task.Supervisor.start_child(NotificationTaskSupervisor, fn -> do_notify(exception, stacktrace) end)
+    metadata = get_metadata()
+    notify(exception, stacktrace, metadata)
   end
 
-  def do_notify(exception, stacktrace) do
+  def notify(exception, stacktrace, metadata) do
+    Task.Supervisor.start_child(NotificationTaskSupervisor, fn -> do_notify(exception, stacktrace, metadata) end)
+  end
+
+  def do_notify(exception, stacktrace, metadata) do
     try do
-      notice = Notice.new(exception, stacktrace)
+      notice = Notice.new(exception, stacktrace, metadata)
       @api_module.send_notice(notice)
     rescue
       exception -> log_exception_after_error(exception)
     end
+  end
+
+
+  @metadata_key "bugsnex_metadata"
+  def get_metadata do
+    (Process.get(@metadata_key) || %{}) |> Enum.into(Map.new)
+  end
+
+  def put_metadata(dict) do
+    Process.put(@metadata_key, Dict.merge(get_metadata, dict))
   end
 
 end
