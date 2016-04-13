@@ -32,6 +32,7 @@ defmodule Bugsnex.Notice do
   end
 
   def event_data(exception, stacktrace) do
+    exception = Exception.normalize(:error, exception)
     %{
       payloadVersion: @payload_version,
       app: @app,

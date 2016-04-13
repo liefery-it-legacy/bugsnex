@@ -1,11 +1,18 @@
 defmodule Bugsnex do
   use Application
+  import Bugsnex.Util
   alias Bugsnex.{Notice, NotificationTaskSupervisor}
 
   @api_module Application.get_env(:bugsnex, :api_module, Bugsnex.Api)
 
   def start(_type, _args) do
-    Task.Supervisor.start_link([name: NotificationTaskSupervisor])
+    {:ok, task_supervisor_pid} = Task.Supervisor.start_link([name: NotificationTaskSupervisor])
+
+    if Application.get_env(:bugsnex, :use_logger) do
+      :error_logger.add_report_handler(Bugsnex.Logger)
+    end
+
+    {:ok, task_supervisor_pid}
   end
 
   def notify(exception) do
@@ -18,8 +25,12 @@ defmodule Bugsnex do
   end
 
   def do_notify(exception, stacktrace) do
-    notice = Notice.new(exception, stacktrace)
-    @api_module.send_notice(notice)
+    try do
+      notice = Notice.new(exception, stacktrace)
+      @api_module.send_notice(notice)
+    rescue
+      exception -> log_exception_after_error(exception)
+    end
   end
 
 end

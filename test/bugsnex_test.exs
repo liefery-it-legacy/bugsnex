@@ -1,17 +1,7 @@
 defmodule BugsnexTest do
-  use ExUnit.Case
-  alias Bugsnex.TestApi
-  alias Bugsnex.NotificationTaskSupervisor
+  use Bugsnex.BugsnexCase
 
   setup do
-    {:ok, _pid} = TestApi.start_link
-    TestApi.subscribe(self)
-
-    on_exit fn ->
-      Task.Supervisor.children(NotificationTaskSupervisor)
-      |> Enum.map(fn child -> Task.Supervisor.terminate_child(NotificationTaskSupervisor, child) end)
-    end
-
     {:ok, %{}}
   end
 
@@ -39,6 +29,7 @@ defmodule BugsnexTest do
     end)
   end
 
+  @tag :capture_log
   test "notify does not raise an error if notification fails" do
     exception = %ArgumentError{message: "raise_local_error"}
     Bugsnex.notify(exception)
