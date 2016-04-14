@@ -16,7 +16,7 @@ defmodule Bugsnex.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [mod: {Bugsnex, []},
-      applications: [:logger, :httpoison, :poison]]
+      applications: [:logger, :httpoison, :poison, :plug]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
@@ -35,6 +35,8 @@ defmodule Bugsnex.Mixfile do
     [
       {:httpoison, "~> 0.8.3"},
       {:poison, "~> 1.5 or ~> 2.0"}, # to be compatible with phoenix_ecto
+      {:plug, "~> 1.1"},
+      {:phoenix, "~> 1.1", only: :test},
       {:bypass, "~> 0.5.1", only: :test},
     ]
   end
