@@ -37,9 +37,7 @@ defmodule Bugsnex.Plug do
         {conn, %{}}
     end
 
-    conn = conn
-           |> Plug.Conn.fetch_cookies
-           |> Plug.Conn.fetch_query_params
+    conn = Plug.Conn.fetch_query_params(conn)
 
     %{context: conn.request_path,
       params: conn.params,
@@ -48,7 +46,7 @@ defmodule Bugsnex.Plug do
   end
 
   def build_request_data(%Plug.Conn{} = conn) do
-    rack_env_http_vars = Enum.reduce conn.req_headers, %{}, &header_to_rack_format/2
+    rack_env_http_vars = Enum.into conn.req_headers, %{}
     request_data = %{
       "REQUEST_METHOD" => conn.method,
       "PATH_INFO" => Enum.join(conn.path_info, "/"),
@@ -78,8 +76,4 @@ defmodule Bugsnex.Plug do
     to_string(hostname)
   end
 
-  def header_to_rack_format({header, value}, acc) do
-    header = "HTTP_" <> String.upcase(header) |> String.replace("-", "_")
-    Map.put(acc, header, value)
-  end
 end

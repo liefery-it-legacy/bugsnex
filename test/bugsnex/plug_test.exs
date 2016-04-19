@@ -72,6 +72,7 @@ defmodule Bugsnex.PlugTest do
   test "build_request_data/1" do
     Application.put_env(:bugsnex, :hostname, "hostname.local")
     conn = conn(:get, "/bang")
+      |> put_req_header("content-type", "application/json")
     {_, remote_port} = conn.peer
     cgi_data = %{"CONTENT_LENGTH" => [],
                  "ORIGINAL_FULLPATH" => "/bang",
@@ -83,20 +84,14 @@ defmodule Bugsnex.PlugTest do
                  "SCRIPT_NAME" => "",
                  "SERVER_ADDR" => "127.0.0.1",
                  "SERVER_NAME" => "hostname.local",
-                 "SERVER_PORT" => 80}
+                 "SERVER_PORT" => 80,
+                 "content-type" => "application/json"}
 
     assert cgi_data == Bugsnex.Plug.build_request_data(conn)
   end
 
   test "get_remote_addr/1" do
     assert "127.0.0.1" == Bugsnex.Plug.get_remote_addr({127, 0, 0, 1})
-  end
-
-  test "header_to_rack_format/2" do
-    header = {"content-type", "application/json"}
-    rack_format = %{"HTTP_CONTENT_TYPE" => "application/json"}
-
-    assert rack_format == Bugsnex.Plug.header_to_rack_format(header, %{})
   end
 
   test "get_hostname/0" do
