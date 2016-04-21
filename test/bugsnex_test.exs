@@ -44,7 +44,6 @@ defmodule BugsnexTest do
     assert event.user == %{id: 678}
   end
 
-
   test "setting and getting the metadata" do
     Bugsnex.put_metadata(%{user: 123})
     spawn_link fn ->

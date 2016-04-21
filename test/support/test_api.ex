@@ -25,6 +25,7 @@ defmodule Bugsnex.TestApi do
     notice_subscribers(state.subscribers, notice)
     {:reply, :error, state}
   end
+
   def handle_call({:send_notice, notice}, _from, state) do
     notice_subscribers(state.subscribers, notice)
     # if the message of the first exception is "raise_local_error"
@@ -41,7 +42,6 @@ defmodule Bugsnex.TestApi do
   def handle_call(:start_crashing, _from, state) do
     {:reply, :ok, %{state | crash: true}}
   end
-
 
   def notice_subscribers(subscribers, notice) do
     Enum.map(subscribers, fn subscriber -> send(subscriber, {:notice_sent, notice}) end)

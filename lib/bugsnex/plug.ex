@@ -75,5 +75,4 @@ defmodule Bugsnex.Plug do
     {:ok, hostname} = :inet.gethostname
     to_string(hostname)
   end
-
 end

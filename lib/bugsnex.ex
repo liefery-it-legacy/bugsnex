@@ -38,7 +38,6 @@ defmodule Bugsnex do
     end
   end
 
-
   @metadata_key "bugsnex_metadata"
   def get_metadata do
     (Process.get(@metadata_key) || %{}) |> Enum.into(Map.new)
@@ -47,5 +46,4 @@ defmodule Bugsnex do
   def put_metadata(dict) do
     Process.put(@metadata_key, Dict.merge(get_metadata, dict))
   end
-
 end
