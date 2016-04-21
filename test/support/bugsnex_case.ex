@@ -2,11 +2,6 @@ defmodule Bugsnex.BugsnexCase do
   use ExUnit.CaseTemplate
   alias Bugsnex.{TestApi, NotificationTaskSupervisor}
 
-  using do
-    quote do
-    end
-  end
-
   setup _tags do
     {:ok, _pid} = TestApi.start_link
     TestApi.subscribe(self)
