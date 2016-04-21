@@ -34,3 +34,17 @@ Once configured, use `Bugsnex.notice(exception)` or `Bugsnex.notice(exception,st
 
 If `use_logger` is set to `true`, an [error logger](http://erlang.org/doc/man/error_logger.html) event handler is added
 and [SASL](http://erlang.org/doc/apps/sasl/error_logging.html) compliant errors are sent to Bugsnag.
+
+
+### Metadata
+
+You can associate metadata by calling `Bugsnex.put_metadata(%{some: "metadata"})`.
+Note that metadata is stored inside the [process dictionary](http://www.erlang.org/course/advanced#dict).
+This means that you shouldn't put a lot of data in there and also that it's only associated with the
+calling process. Errors in different processes won't be associated with that metadata.
+
+There are some special keys for metadata that Bugsnag understands (explanations paraphrased from the Bugsnag API documentation):
+
+  * `%{user: %{id: 123, email: "user@example.com", name: "Some name"}`: Information about the user affected by the crash
+  * `%{context: "auth/session#create"}`: A string representing what was happening in the application at the time of the error
+  * `%{device: %{osVersion: "2.1.1", hostname: "web1.internal"}}`: Information about the computer/device running the app
