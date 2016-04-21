@@ -67,5 +67,4 @@ defmodule Bugsnex.NoticeTest do
     [event] =  notice.events
     assert event.metaData == metadata
   end
-
 end

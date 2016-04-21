@@ -2,7 +2,6 @@ defmodule Bugsnex.PlugTest do
   use Bugsnex.BugsnexCase
   use Plug.Test
 
-
   defmodule PhoenixApp do
     use Phoenix.Router
   end
@@ -20,6 +19,7 @@ defmodule Bugsnex.PlugTest do
       raise RuntimeError, "Oops"
     end
   end
+
 
   test "exceptions on a non-existant route are ignored" do
     conn = conn(:get, "/not_found")
@@ -101,7 +101,6 @@ defmodule Bugsnex.PlugTest do
     Application.delete_env(:bugsnex, :hostname)
     assert is_binary(Bugsnex.Plug.get_hostname) #depends on the system, so we just make sure it's a string
   end
-
 
   defp with_session(conn) do
     session_opts = Plug.Session.init(store: :cookie, key: "_app",

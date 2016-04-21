@@ -1,7 +1,7 @@
 defmodule Bugsnex.Logger do
   import Bugsnex.Util
-
   use GenEvent
+
 
   def init(_mod, []), do: {:ok, []}
 
