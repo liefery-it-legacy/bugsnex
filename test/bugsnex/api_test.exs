@@ -30,4 +30,17 @@ defmodule Bugsnex.ApiTest do
     Api.send_notice(notice)
   end
 
+
+  test "send_deploy sends a deploy notification to bugsnag", %{bypass: bypass} do
+    deploy = %{"apiKey" => "some key"}
+    Bypass.expect bypass, fn conn ->
+      {:ok, body, conn} = Conn.read_body(conn)
+      assert conn.request_path == "/deploy"
+      assert Poison.decode!(body) == deploy
+      Conn.resp(conn, 200, "ok")
+    end
+
+    Api.send_deploy(deploy)
+  end
+
 end

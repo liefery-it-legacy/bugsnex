@@ -1,7 +1,7 @@
 defmodule Bugsnex do
   use Application
   import Bugsnex.Util
-  alias Bugsnex.{Notice, NotificationTaskSupervisor}
+  alias Bugsnex.{Notice, NotificationTaskSupervisor, Deploy}
 
   @api_module Application.get_env(:bugsnex, :api_module, Bugsnex.Api)
 
@@ -45,5 +45,10 @@ defmodule Bugsnex do
 
   def put_metadata(dict) do
     Process.put(@metadata_key, Dict.merge(get_metadata, dict))
+  end
+
+  def track_deploy(params \\ %{}) do
+    deploy = Deploy.new(params)
+    @api_module.send_deploy(deploy)
   end
 end

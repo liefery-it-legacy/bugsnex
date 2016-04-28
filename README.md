@@ -30,10 +30,23 @@ config :bugsnex, :use_logger, true
 ```
 
 ## Usage
+
+### Sending bug reports
 Once configured, use `Bugsnex.notice(exception)` or `Bugsnex.notice(exception,stacktrace)` to send errors to Bugsnag.
 
 If `use_logger` is set to `true`, an [error logger](http://erlang.org/doc/man/error_logger.html) event handler is added
 and [SASL](http://erlang.org/doc/apps/sasl/error_logging.html) compliant errors are sent to Bugsnag.
+
+### Tracking deployments
+Use `Bugsnex.track_deploy(additional_params)` to send a deployment notification to bugsnag.
+`additional_params` is an optional map with keys:
+
+  * `:apiKey`: your bugsnag api key (default is `Application.get_env(:bugsnex, :api_key)`)
+  * `:repository`: url of your source code repository (default is `Application.get_env(:bugsnex, :repository_url)`)
+  * `:releaseStage`: the release stage (e.g. staging, production) (default is `Application.get_env(:bugsnex, :release_stage)`)
+  * `:branch`: scm branch this release was deployed from
+  * `:revision`: scm revision this release was deployed from
+  * `:appVersion`: SemVer version of your app
 
 
 ### Metadata
