@@ -13,6 +13,10 @@ defmodule Bugsnex.TestApi do
     :ok = GenServer.call(__MODULE__, {:send_notice, notice})
   end
 
+  def send_deploy(deploy) do
+    :ok = GenServer.call(__MODULE__, {:send_deploy, deploy})
+  end
+
   def start_crashing do
     :ok = GenServer.call(__MODULE__, :start_crashing)
   end
@@ -22,12 +26,12 @@ defmodule Bugsnex.TestApi do
   end
 
   def handle_call({:send_notice, notice}, _from, state = %{crash: true}) do
-    notice_subscribers(state.subscribers, notice)
+    notify_subscribers(state.subscribers, :notice_sent, notice)
     {:reply, :error, state}
   end
 
   def handle_call({:send_notice, notice}, _from, state) do
-    notice_subscribers(state.subscribers, notice)
+    notify_subscribers(state.subscribers, :notice_sent, notice)
     # if the message of the first exception is "raise_local_error"
     # raise an exception (for testing error case)
     [event] = notice.events
@@ -43,7 +47,12 @@ defmodule Bugsnex.TestApi do
     {:reply, :ok, %{state | crash: true}}
   end
 
-  def notice_subscribers(subscribers, notice) do
-    Enum.map(subscribers, fn subscriber -> send(subscriber, {:notice_sent, notice}) end)
+  def handle_call({:send_deploy, deploy}, _from, state) do
+    notify_subscribers(state.subscribers, :deploy_sent, deploy)
+    {:reply, :ok, state}
+  end
+
+  def notify_subscribers(subscribers, kind, data) do
+    Enum.map(subscribers, fn subscriber -> send(subscriber, {kind, data}) end)
   end
 end

@@ -15,6 +15,11 @@ defmodule Bugsnex.Api do
     post("/", body)
   end
 
+  def send_deploy(deploy) do
+    body = Poison.encode!(deploy)
+    post("/deploy", body)
+  end
+
   defp base_url do
     Application.get_env(:bugsnex, :base_url, "https://notify.bugsnag.com")
   end

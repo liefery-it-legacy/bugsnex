@@ -52,4 +52,19 @@ defmodule BugsnexTest do
     end
     assert Bugsnex.get_metadata.user == 123
   end
+
+
+  test "track_deploy sends a deploy notification to the api" do
+    Bugsnex.track_deploy()
+
+    assert_receive {:deploy_sent, deploy}
+    assert deploy.apiKey
+  end
+
+  test "track_deploy forwards deploy parameter" do
+    Bugsnex.track_deploy(%{:revision => "some_sha"})
+
+    assert_receive {:deploy_sent, deploy}
+    assert deploy.revision == "some_sha"
+  end
 end
