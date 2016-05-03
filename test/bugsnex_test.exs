@@ -67,4 +67,25 @@ defmodule BugsnexTest do
     assert_receive {:deploy_sent, deploy}
     assert deploy.revision == "some_sha"
   end
+
+  test "handle_errors returns the result of the block if no error was raised" do
+    require Bugsnex
+    result = Bugsnex.handle_errors do
+      :some_value
+    end
+    assert result == :some_value
+  end
+
+  test "handle_errors sends exception and metadata to bugsnag" do
+    require Bugsnex
+    catch_error(fn ->
+      Bugsnex.handle_errors %{some: "metadata"} do
+        raise "an error"
+      end
+    end.())
+
+    assert_receive({:notice_sent, notice})
+    [event] = notice.events
+    assert event.metaData.some == "metadata"
+  end
 end
