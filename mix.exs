@@ -5,6 +5,8 @@ defmodule Bugsnex.Mixfile do
     [app: :bugsnex,
      version: "0.0.1",
      elixir: "~> 1.2",
+     description: "Elixir client for Bugsnag with helpers for Plug and Phoenix",
+     package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      elixirc_paths: elixirc_paths(Mix.env),
@@ -21,6 +23,14 @@ defmodule Bugsnex.Mixfile do
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_),     do: ["lib"]
+
+  defp package do
+    [
+      licences: ["MIT"],
+      links: %{"GitHub" => "https://github.com/liefery/bugsnex"},
+      maintainers: ["Manuel Kallenbach"]
+    ]
+  end
 
   # Dependencies can be Hex packages:
   #
