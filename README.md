@@ -37,6 +37,16 @@ Once configured, use `Bugsnex.notice(exception)` or `Bugsnex.notice(exception,st
 If `use_logger` is set to `true`, an [error logger](http://erlang.org/doc/man/error_logger.html) event handler is added
 and [SASL](http://erlang.org/doc/apps/sasl/error_logging.html) compliant errors are sent to Bugsnag.
 
+You can also manually wrap code in a `Bugsnex.handle_error` block. Errors in this block will then be sent to Bugsnag and reraised. Example:
+
+
+```elixir
+Bugsnex.handle_errors %{some: "metadata"} do
+  somthing_that_could_raise_and_error()
+end
+```
+
+
 ### Tracking deployments
 Use `Bugsnex.track_deploy(additional_params)` to send a deployment notification to bugsnag.
 `additional_params` is an optional map with keys:

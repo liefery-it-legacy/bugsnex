@@ -51,4 +51,16 @@ defmodule Bugsnex do
     deploy = Deploy.new(params)
     @api_module.send_deploy(deploy)
   end
+
+  defmacro handle_errors(metadata \\ quote(do: %{}), do: block) do
+    quote do
+      try do
+        unquote(block)
+      rescue
+        e ->
+          Bugsnex.notify(e, System.stacktrace, unquote(metadata))
+          raise e
+      end
+    end
+  end
 end
