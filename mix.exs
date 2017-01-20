@@ -4,7 +4,7 @@ defmodule Bugsnex.Mixfile do
   def project do
     [app: :bugsnex,
      version: "0.0.1",
-     elixir: "~> 1.2",
+     elixir: "~> 1.4",
      description: "Elixir client for Bugsnag with helpers for Plug and Phoenix",
      package: package,
      build_embedded: Mix.env == :prod,
@@ -43,10 +43,10 @@ defmodule Bugsnex.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.8.3"},
+      {:httpoison, "~> 0.11"},
       {:poison, "~> 1.5 or ~> 2.0"}, # to be compatible with phoenix_ecto
-      {:plug, "~> 1.1"},
-      {:phoenix, "~> 1.1", only: :test},
+      {:plug, "~> 1.3"},
+      {:phoenix, "~> 1.2.1", only: :test},
       {:bypass, "~> 0.5.1", only: :test},
     ]
   end
