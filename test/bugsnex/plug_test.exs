@@ -39,7 +39,7 @@ defmodule Bugsnex.PlugTest do
     conn = conn(:get, "/bang")
     catch_error(PlugApp.call conn, [])
 
-    assert_receive({:notice_sent, notice})
+    assert_receive({:notice_sent, _notice})
   end
 
   test "sends metadata to bugsnag" do

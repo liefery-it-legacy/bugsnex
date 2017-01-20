@@ -1,9 +1,8 @@
 defmodule Bugsnex.Api do
   use HTTPoison.Base
 
-
   def process_url(path) do
-    base_url <> path
+    base_url() <> path
   end
 
   defp process_request_headers(headers) do

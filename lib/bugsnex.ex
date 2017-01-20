@@ -16,7 +16,7 @@ defmodule Bugsnex do
   end
 
   def notify(exception) do
-    {:current_stacktrace, stacktrace} = Process.info(self, :current_stacktrace)
+    {:current_stacktrace, stacktrace} = Process.info(self(), :current_stacktrace)
     notify(exception, stacktrace)
   end
 
@@ -44,7 +44,7 @@ defmodule Bugsnex do
   end
 
   def put_metadata(dict) do
-    Process.put(@metadata_key, Dict.merge(get_metadata, dict))
+    Process.put(@metadata_key, Map.merge(get_metadata(), dict))
   end
 
   def track_deploy(params \\ %{}) do

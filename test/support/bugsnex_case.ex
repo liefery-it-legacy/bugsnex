@@ -4,7 +4,7 @@ defmodule Bugsnex.BugsnexCase do
 
   setup _tags do
     {:ok, _pid} = TestApi.start_link
-    TestApi.subscribe(self)
+    TestApi.subscribe(self())
 
     on_exit fn ->
       Task.Supervisor.children(NotificationTaskSupervisor)

@@ -10,7 +10,7 @@ defmodule Bugsnex.Util do
     try do
       error_type = exception.__struct__
       reason = Exception.message(exception)
-      {:current_stacktrace, stacktrace} = Process.info(self, :current_stacktrace)
+      {:current_stacktrace, stacktrace} = Process.info(self(), :current_stacktrace)
       message = "Unable to notify Bugsnex! #{error_type}: #{reason}\n#{inspect(stacktrace)}"
       Logger.warn(message)
     rescue

@@ -6,11 +6,11 @@ defmodule Bugsnex.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.4",
      description: "Elixir client for Bugsnag with helpers for Plug and Phoenix",
-     package: package,
+     package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      elixirc_paths: elixirc_paths(Mix.env),
-     deps: deps]
+     deps: deps()]
   end
 
   # Configuration for the OTP application
