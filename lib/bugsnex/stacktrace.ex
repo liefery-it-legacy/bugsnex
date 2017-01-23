@@ -12,7 +12,7 @@ defmodule Bugsnex.Stacktrace do
     %{file: convert_string(file),
       method: Exception.format_mfa(mod, fun, arity),
       lineNumber: line,
-      inProject: otp_app == get_app(mod)}
+      inProject: otp_app() == get_app(mod)}
   end
 
   defp get_app(module) do

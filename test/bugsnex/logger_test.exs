@@ -18,7 +18,7 @@ defmodule Bugsnex.LoggerTest do
     :proc_lib.spawn(fn ->
       raise RuntimeError, "Oops"
     end)
-    assert_receive {:notice_sent, notice}
+    assert_receive {:notice_sent, _notice}
   end
 
   test "crashes do not cause recursive logging" do
@@ -57,7 +57,7 @@ defmodule Bugsnex.LoggerTest do
       Float.parse("12.345e308")
     end)
 
-    assert_receive {notice_sent, _notice}
+    assert_receive {:notice_sent, _notice}
   end
 
   @tag :capture_log
@@ -65,6 +65,6 @@ defmodule Bugsnex.LoggerTest do
     {:ok, pid} = TestErrorServer.start
     GenServer.cast(pid, :fail)
 
-    assert_receive {notice_sent, _notice}
+    assert_receive {:notice_sent, _notice}
   end
 end
