@@ -28,9 +28,9 @@ defmodule Bugsnex.Mixfile do
 
   defp package do
     [
-      licences: ["MIT"],
+      licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/liefery/bugsnex"},
-      maintainers: ["Manuel Kallenbach"]
+      maintainers: ["Manuel Kallenbach", "Tobias Pfeiffer", "Tiago Teixeira"]
     ]
   end
 
