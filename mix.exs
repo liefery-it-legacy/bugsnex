@@ -1,11 +1,13 @@
 defmodule Bugsnex.Mixfile do
   use Mix.Project
 
+  @version "0.1.0"
   def project do
     [app: :bugsnex,
-     version: "0.0.1",
+     version: @version,
      elixir: "~> 1.2",
      description: "Elixir client for Bugsnag with helpers for Plug and Phoenix",
+     docs: [source_ref: @version],
      package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
