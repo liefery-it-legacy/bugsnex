@@ -46,10 +46,12 @@ defmodule Bugsnex.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.11"},
-      {:poison, ">= 1.5.0"},
-      {:plug, "~> 1.1"},
-      {:phoenix, "~> 1.1", only: :test},
-      {:bypass, "~> 0.5.1", only: :test},
+      {:poison,    ">= 1.5.0"},
+      {:plug,      "~> 1.1"},
+      {:phoenix,   "~> 1.1",   only: :test},
+      {:bypass,    "~> 0.5.1", only: :test},
+      {:ex_doc,    "~> 0.11",  only: :dev},
+      {:earmark,   "~> 1.0.1", only: :dev},
     ]
   end
 end
