@@ -1,4 +1,4 @@
-# Bugsnex
+# Bugsnex [![Build Status](https://travis-ci.org/liefery/bugsnex.svg?branch=master)](https://travis-ci.org/liefery/bugsnex)
 
 API client and logger for Bugsnag
 
