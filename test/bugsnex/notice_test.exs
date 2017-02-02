@@ -56,9 +56,15 @@ defmodule Bugsnex.NoticeTest do
   end
 
   test "new notice contains device data if present in the metadata" do
-    notice = Notice.new(@exception, @stacktrace, %{device: %{osVersion: "2.1.1", hostname: "web1.internal"}})
+    notice = Notice.new(@exception, @stacktrace, %{device: %{osVersion: "2.1.1"}})
     [event] =  notice.events
-    assert event.device == %{osVersion: "2.1.1", hostname: "web1.internal"}
+    assert event.device == %{osVersion: "2.1.1", host: "myhost.local"}
+  end
+
+  test "new notice contains hostname in device data" do
+    notice = Notice.new(@exception, @stacktrace, %{})
+    [event] =  notice.events
+    assert event.device == %{host: "myhost.local"}
   end
 
   test "new notice contains all the meta data under the metaData key" do
@@ -66,5 +72,11 @@ defmodule Bugsnex.NoticeTest do
     notice = Notice.new(@exception, @stacktrace, metadata)
     [event] =  notice.events
     assert event.metaData == metadata
+  end
+
+  test ".device_defaults contains the systems hostname" do
+    defaults = Notice.device_defaults(Bugsnex.System)
+    {:ok, hostname} = :inet.gethostname
+    assert defaults == %{host: hostname}
   end
 end

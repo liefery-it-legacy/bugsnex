@@ -5,6 +5,7 @@ defmodule Bugsnex.Notice do
   @api_key Application.get_env(:bugsnex, :api_key)
   @release_stage Application.get_env(:bugsnex, :release_stage)
   @app %{releaseStage: @release_stage}
+  @system Application.get_env(:bugsnex, :system_module, Bugsnex.System)
 
   defstruct apiKey: @api_key,
     notifier: %{name: "Bugsnex",
@@ -63,8 +64,12 @@ defmodule Bugsnex.Notice do
   end
   def put_context_data(event_data, _), do: event_data
 
-  def put_device_data(event_data, %{device: device}) do
-    Map.put(event_data, :device, device)
+  def put_device_data(event_data, metadata) do
+    device = Map.get(metadata, :device, %{})
+    Map.put(event_data, :device, Map.merge(device_defaults(), device))
   end
-  def put_device_data(event_data, _), do: event_data
+
+  def device_defaults(system \\ @system) do
+    %{host: system.hostname}
+  end
 end
