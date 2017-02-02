@@ -25,9 +25,9 @@ defmodule Bugsnex.NoticeTest do
 
   test "new notice contains the exception as event" do
     notice = Notice.new(@exception, @stacktrace, @metadata)
-    [event] =  notice.events
+    assert [event] = notice.events
     assert event.payloadVersion == "2"
-    [exception_data] = event.exceptions
+    assert [exception_data] = event.exceptions
     assert exception_data.errorClass == ArgumentError
     assert exception_data.message == @exception_message
     assert exception_data.stacktrace == [%{file: nil,
@@ -39,38 +39,38 @@ defmodule Bugsnex.NoticeTest do
 
   test "new notice contains the app data" do
     notice = Notice.new(@exception, @stacktrace, @metadata)
-    [event] =  notice.events
+    assert [event] = notice.events
     assert event.app.releaseStage == "test_release_stage"
   end
 
   test "new notice contains user data if present in the metadata" do
     notice = Notice.new(@exception, @stacktrace, %{user: %{id: 123, name: "Max Mustermann"}})
-    [event] =  notice.events
+    assert [event] = notice.events
     assert event.user == %{id: 123, name: "Max Mustermann"}
   end
 
   test "new notice contains the context of the error if present in the metadata" do
     notice = Notice.new(@exception, @stacktrace, %{context: "UserSocket->CourierChannel->courier:123->handle_in"})
-    [event] =  notice.events
+    assert [event] = notice.events
     assert event.context == "UserSocket->CourierChannel->courier:123->handle_in"
   end
 
   test "new notice contains device data if present in the metadata" do
     notice = Notice.new(@exception, @stacktrace, %{device: %{osVersion: "2.1.1"}})
-    [event] =  notice.events
+    assert [event] = notice.events
     assert event.device == %{osVersion: "2.1.1", host: "myhost.local"}
   end
 
   test "new notice contains hostname in device data" do
     notice = Notice.new(@exception, @stacktrace, %{})
-    [event] =  notice.events
+    assert [event] = notice.events
     assert event.device == %{host: "myhost.local"}
   end
 
   test "new notice contains all the meta data under the metaData key" do
     metadata = %{somekey: "somevalue", user: %{id: 123}}
     notice = Notice.new(@exception, @stacktrace, metadata)
-    [event] =  notice.events
+    assert [event] = notice.events
     assert event.metaData == metadata
   end
 

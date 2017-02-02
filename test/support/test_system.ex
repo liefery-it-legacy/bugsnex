@@ -3,4 +3,3 @@ defmodule Bugsnex.TestSystem do
     "myhost.local"
   end
 end
-
