@@ -40,9 +40,13 @@ defmodule Bugsnex do
 
   @metadata_key "bugsnex_metadata"
   def get_metadata do
-    (Process.get(@metadata_key) || %{}) |> Enum.into(Map.new)
+    (Process.get(@metadata_key) || %{}) |> Enum.into(%{})
   end
 
+  def put_metadata(keyword_list) when is_list(keyword_list) do
+    map = Enum.into(keyword_list, %{})
+    put_metadata(map)
+  end
   def put_metadata(dict) do
     Process.put(@metadata_key, Map.merge(get_metadata(), dict))
   end
