@@ -1,3 +1,9 @@
+# 0.2.1 (February 20, 2017)
+
+## Bugfixes
+
+* Remove a regression that made it impossible to send keyword lists to Bugsnex.put_metadata
+
 # 0.2.0 (February 20, 2017)
 
 ## Features
