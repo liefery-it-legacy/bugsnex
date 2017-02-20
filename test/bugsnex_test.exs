@@ -53,6 +53,14 @@ defmodule BugsnexTest do
     assert Bugsnex.get_metadata.user == 123
   end
 
+  test ".put_metadata works with keyword list (regression)" do
+    Bugsnex.put_metadata(foo: "bar")
+    spawn_link fn ->
+      Bugsnex.put_metadata(user: 678)
+      assert Bugsnex.get_metadata.user == 678
+    end
+    assert Bugsnex.get_metadata.foo == "bar"
+  end
 
   test "track_deploy sends a deploy notification to the api" do
     Bugsnex.track_deploy()
