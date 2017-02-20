@@ -1,3 +1,9 @@
+# 0.2.0 (February 20, 2017)
+
+## Features
+
+* report the hostname
+
 # 0.1.0 (January 24, 2017)
 
 ## Bugfixes
