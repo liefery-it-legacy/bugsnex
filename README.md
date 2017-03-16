@@ -8,16 +8,30 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
   1. Add bugsnex to your list of dependencies in `mix.exs`:
 
-        def deps do
-          [{:bugsnex, "~> 0.0.1"}]
-        end
+     ```
+     def deps do
+       [{:bugsnex, "~> 0.2.1"}]
+     end
+     ```
 
-  2. Ensure bugsnex is started before your application:
+  2. If you use Elixir < 1.4 ensure bugsnex is started before your application:
 
-        def application do
-          [applications: [:bugsnex]]
-        end
+     ```
+     def application do
+       [applications: [:bugsnex]]
+     end
+     ```
 
+  3. Add the `Bugsnex.Plug` to your router:
+
+     ```
+     defmodule YourApp.Router do
+       use YourApp.Web, :router
+       use Bugsnex.Plug
+
+       # ...
+     end
+     ```
 
 ## Configuration
 
