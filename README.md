@@ -8,16 +8,22 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
   1. Add bugsnex to your list of dependencies in `mix.exs`:
 
-        def deps do
-          [{:bugsnex, "~> 0.0.1"}]
-        end
+     ```elixir
+     def deps do
+       [{:bugsnex, "~> 0.2.1"}]
+     end
+     ```
 
-  2. Ensure bugsnex is started before your application:
+  2. If you use Elixir < 1.4 ensure bugsnex is started before your application:
 
-        def application do
-          [applications: [:bugsnex]]
-        end
+     ```elixir
+     def application do
+       [applications: [:bugsnex]]
+     end
+     ```
 
+  3. Check out how to send notifications to bugsnag via `Bugsnag.notify` or the
+     plug in the "Usage" section
 
 ## Configuration
 
@@ -32,6 +38,7 @@ config :bugsnex, :use_logger, true
 ## Usage
 
 ### Sending bug reports
+
 Once configured, use `Bugsnex.notice(exception)` or `Bugsnex.notice(exception,stacktrace)` to send errors to Bugsnag.
 
 If `use_logger` is set to `true`, an [error logger](http://erlang.org/doc/man/error_logger.html) event handler is added
@@ -39,15 +46,26 @@ and [SASL](http://erlang.org/doc/apps/sasl/error_logging.html) compliant errors 
 
 You can also manually wrap code in a `Bugsnex.handle_error` block. Errors in this block will then be sent to Bugsnag and reraised. Example:
 
-
 ```elixir
 Bugsnex.handle_errors %{some: "metadata"} do
   somthing_that_could_raise_and_error()
 end
 ```
 
+Bugsnex also provides a Plug called `Bugsnex.Plug` that you could add to
+your router to send errors automatically. Example:
+
+```elixir
+defmodule YourApp.Router do
+ use YourApp.Web, :router
+ use Bugsnex.Plug
+
+ # ...
+end
+```
 
 ### Tracking deployments
+
 Use `Bugsnex.track_deploy(additional_params)` to send a deployment notification to bugsnag.
 `additional_params` is an optional map with keys:
 
