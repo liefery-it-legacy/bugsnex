@@ -82,16 +82,15 @@ defmodule Bugsnex.Plug do
     do_filter(params, Application.get_env(:bugsnex, :filter_params, @default_filter_params))
   end
 
-  defp do_filter(%{__struct__: mod} = struct, _params) when is_atom(mod), do: struct
-  defp do_filter(%{} = map, params) do
-    Enum.into map, %{}, fn {k, v} ->
-      if is_binary(k) && Enum.member?(params, k) do
-        {k, "[FILTERED]"}
+  defp do_filter(%{} = map, filter_params) do
+    Enum.into map, %{}, fn {key, value} ->
+      if Enum.member?(filter_params, key) do
+        {key, "[FILTERED]"}
       else
-        {k, do_filter(v, params)}
+        {key, do_filter(value, filter_params)}
       end
     end
   end
-  defp do_filter([_|_] = list, params), do: Enum.map(list, &do_filter(&1, params))
-  defp do_filter(other, _params), do: other
+  defp do_filter([_|_] = list, filter_params), do: Enum.map(list, &do_filter(&1, filter_params))
+  defp do_filter(other, _filter_params), do: other
 end
