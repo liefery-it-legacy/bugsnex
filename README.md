@@ -52,15 +52,17 @@ Bugsnex.handle_errors %{some: "metadata"} do
 end
 ```
 
+### Automatic reports via Bugsnex.Plug
+
 Bugsnex also provides a Plug called `Bugsnex.Plug` that you could add to
 your router to send errors automatically. Example:
 
 ```elixir
 defmodule YourApp.Router do
- use YourApp.Web, :router
- use Bugsnex.Plug
+  use YourApp.Web, :router
+  use Bugsnex.Plug
 
- # ...
+  # ...
 end
 ```
 
