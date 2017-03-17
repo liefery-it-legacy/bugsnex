@@ -27,6 +27,8 @@ defmodule Bugsnex.Plug do
     end
   end
 
+  @default_filter_params ~w(password password_confirmation api_key)
+
   def build_plug_env(%Plug.Conn{} = conn) do
     {conn, session} = try do
       conn = Plug.Conn.fetch_session(conn)
@@ -40,7 +42,7 @@ defmodule Bugsnex.Plug do
     conn = Plug.Conn.fetch_query_params(conn)
 
     %{context: conn.request_path,
-      params: conn.params,
+      params: filter_parameters(conn.params),
       session: session,
       request: build_request_data(conn)}
   end
@@ -75,4 +77,21 @@ defmodule Bugsnex.Plug do
     {:ok, hostname} = :inet.gethostname
     to_string(hostname)
   end
+
+  defp filter_parameters(params) do
+    do_filter(params, Application.get_env(:bugsnex, :filter_params, @default_filter_params))
+  end
+
+  defp do_filter(%{__struct__: mod} = struct, _params) when is_atom(mod), do: struct
+  defp do_filter(%{} = map, params) do
+    Enum.into map, %{}, fn {k, v} ->
+      if is_binary(k) && Enum.member?(params, k) do
+        {k, "[FILTERED]"}
+      else
+        {k, do_filter(v, params)}
+      end
+    end
+  end
+  defp do_filter([_|_] = list, params), do: Enum.map(list, &do_filter(&1, params))
+  defp do_filter(other, _params), do: other
 end
