@@ -1,3 +1,9 @@
+# 0.3.0 (unreleased)
+
+## Features
+
+* Filter out specific parameters before sending to bugsnag in `Bugsnex.Plug`, defaulting to password, password_confirmation and api_key
+
 # 0.2.1 (February 20, 2017)
 
 ## Bugfixes
