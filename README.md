@@ -32,8 +32,11 @@ config :bugsnex, :otp_app, :your_app_name
 config :bugsnex, :api_key, "your_api_key"
 config :bugsnex, :release_stage, "staging"
 config :bugsnex, :use_logger, true
-
+config :bugsnex, :filter_params, ~w(password password_confirmation api_key)
 ```
+
+The `:filter_params` config is used by the `Bugsnex.Plug` module to filter out
+parameters that should not be sent to Bugsnag.
 
 ## Usage
 
