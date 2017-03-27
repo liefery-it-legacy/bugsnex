@@ -4,6 +4,10 @@
 
 * Filter out specific parameters before sending to bugsnag in `Bugsnex.Plug`, defaulting to password, password_confirmation and api_key
 
+## Bugfixes
+
+* Report hostname as String/Binary instead of charlist
+
 # 0.2.1 (February 20, 2017)
 
 ## Bugfixes

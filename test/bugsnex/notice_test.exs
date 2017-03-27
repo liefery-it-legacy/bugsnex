@@ -77,6 +77,6 @@ defmodule Bugsnex.NoticeTest do
   test ".device_defaults contains the systems hostname" do
     defaults = Notice.device_defaults(Bugsnex.System)
     {:ok, hostname} = :inet.gethostname
-    assert defaults == %{host: hostname}
+    assert defaults == %{host: to_string(hostname)}
   end
 end

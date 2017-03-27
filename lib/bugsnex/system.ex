@@ -1,6 +1,6 @@
 defmodule Bugsnex.System do
   def hostname do
     {:ok, hostname} = :inet.gethostname
-    hostname
+    to_string(hostname)
   end
 end

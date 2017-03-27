@@ -4,6 +4,7 @@ defmodule Bugsnex.SystemTest do
   test "hostname" do
     {:ok, current_hostname} = :inet.gethostname
     hostname = Bugsnex.System.hostname
-    assert hostname == current_hostname
+    assert is_binary(hostname)
+    assert hostname == to_string(current_hostname)
   end
 end
