@@ -70,7 +70,46 @@ defmodule Bugsnex.PlugTest do
   end
 
   test "build_plug_env/2 also filters a deep map" do
-    conn = conn(:get, "/bang?foo=bar&map[a]=1&map[b][][password]=secret")
+    params =  %{
+      "foo" => "bar",
+      "map" => %{
+        "b" => %{"api_key" => "secret"}
+      }
+    }
+    query_string = Plug.Conn.Query.encode(params)
+    conn = conn(:get, "/bang?#{query_string}")
+    plug_env = %{request: Bugsnex.Plug.build_request_data(conn),
+                 context: "/bang",
+                 params: %{"foo" => "bar", "map" => %{"b" => %{"api_key" => "[FILTERED]"}}},
+                 session: %{}}
+
+    assert plug_env == Bugsnex.Plug.build_plug_env(conn)
+  end
+
+  test "build_plug_env/2 also filters a list" do
+    params =  %{"foo" => [%{"password_confirmation" => "secret"}]}
+
+    query_string = Plug.Conn.Query.encode(params)
+    conn = conn(:get, "/bang?#{query_string}")
+    plug_env = %{request: Bugsnex.Plug.build_request_data(conn),
+                 context: "/bang",
+                 params: %{"foo" => [%{"password_confirmation" => "[FILTERED]"}]},
+                 session: %{}}
+
+    assert plug_env == Bugsnex.Plug.build_plug_env(conn)
+  end
+
+
+  test "build_plug_env/2 also filters a deep map with a list" do
+    params =  %{
+      "foo" => "bar",
+      "map" => %{
+        "a" => "1",
+        "b" => [%{"password" => "secret"}]
+      }
+    }
+    query_string = Plug.Conn.Query.encode(params)
+    conn = conn(:get, "/bang?#{query_string}")
     plug_env = %{request: Bugsnex.Plug.build_request_data(conn),
                  context: "/bang",
                  params: %{"foo" => "bar", "map" => %{"a" => "1", "b" => [%{"password" => "[FILTERED]"}]}},
