@@ -1,7 +1,7 @@
 defmodule Bugsnex.Mixfile do
   use Mix.Project
 
-  @version "0.3.0"
+  @version "0.3.1"
   def project do
     [app: :bugsnex,
      version: @version,
@@ -36,7 +36,7 @@ defmodule Bugsnex.Mixfile do
 
   # Dependencies can be Hex packages:
   #
-  #   {:mydep, "~> 0.3.0"}
+  #   {:mydep, "~> 0.3.1"}
   #
   # Or git/path repositories:
   #

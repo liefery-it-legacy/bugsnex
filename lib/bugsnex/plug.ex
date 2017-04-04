@@ -82,6 +82,11 @@ defmodule Bugsnex.Plug do
     do_filter(params, Application.get_env(:bugsnex, :filter_params, @default_filter_params))
   end
 
+  defp do_filter(%{__struct__: _} = map, filter_params) do
+    map
+    |> Map.from_struct
+    |> do_filter(filter_params)
+  end
   defp do_filter(%{} = map, filter_params) do
     Enum.into map, %{}, fn {key, value} ->
       if Enum.member?(filter_params, key) do

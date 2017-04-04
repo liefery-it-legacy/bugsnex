@@ -86,6 +86,20 @@ defmodule Bugsnex.PlugTest do
     assert plug_env == Bugsnex.Plug.build_plug_env(conn)
   end
 
+  test "build_plug_env/2 also filters a file upload" do
+    params =  %{
+      foo: "bar",
+      file: %Plug.Upload{content_type: "text/csv", filename: "test.csv", path: "/path/to/tempfile"}
+    }
+    conn = conn(:get, "/bang", params)
+    plug_env = %{request: Bugsnex.Plug.build_request_data(conn),
+                 context: "/bang",
+                 params: %{"foo" => "bar", "file" => %{:content_type => "text/csv", :filename => "test.csv", :path => "/path/to/tempfile"}},
+                 session: %{}}
+
+    assert plug_env == Bugsnex.Plug.build_plug_env(conn)
+  end
+
   test "build_plug_env/2 also filters a list" do
     params =  %{"foo" => [%{"password_confirmation" => "secret"}]}
 
