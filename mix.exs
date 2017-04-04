@@ -30,7 +30,7 @@ defmodule Bugsnex.Mixfile do
     [
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/liefery/bugsnex"},
-      maintainers: ["Manuel Kallenbach", "Tobias Pfeiffer", "Tiago Teixeira"]
+      maintainers: ["Manuel Kallenbach", "Tobias Pfeiffer", "Tiago Teixeira", "Daniel Schweighöfer"]
     ]
   end
 
