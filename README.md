@@ -10,7 +10,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
      ```elixir
      def deps do
-       [{:bugsnex, "~> 0.2.1"}]
+       [{:bugsnex, "~> 0.3.1"}]
      end
      ```
 

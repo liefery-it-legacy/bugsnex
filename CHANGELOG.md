@@ -1,3 +1,9 @@
+# 0.3.1 (April 4, 2017)
+
+## Bugfixes
+
+* Support Structs in Params, e.g. File Uploads with `Plug.Upload`
+
 # 0.3.0 (March 27, 2017)
 
 ## Features
