@@ -5,7 +5,7 @@ defmodule Bugsnex.Mixfile do
   def project do
     [app: :bugsnex,
      version: @version,
-     elixir: "~> 1.2",
+     elixir: "~> 1.4",
      description: "Elixir client for Bugsnag with helpers for Plug and Phoenix",
      docs: [source_ref: @version],
      package: package(),
@@ -45,13 +45,14 @@ defmodule Bugsnex.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.11"},
-      {:poison,    ">= 1.5.0"},
-      {:plug,      "~> 1.1"},
-      {:phoenix,   "~> 1.1",   only: :test},
-      {:bypass,    "~> 0.5.1", only: :test},
-      {:ex_doc,    "~> 0.11",  only: :dev},
-      {:earmark,   "~> 1.0.1", only: :dev},
+      {:httpoison,   "~> 0.11"},
+      {:poison,      ">= 1.5.0"},
+      {:plug,        "~> 1.6"},
+      {:plug_cowboy, "~> 1.0",   only: :test},
+      {:phoenix,     "~> 1.1",   only: :test},
+      {:bypass,      "~> 0.5.1", only: :test},
+      {:ex_doc,      "~> 0.11",  only: :dev},
+      {:earmark,     "~> 1.0.1", only: :dev},
     ]
   end
 end

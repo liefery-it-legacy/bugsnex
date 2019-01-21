@@ -55,7 +55,7 @@ defmodule Bugsnex.Plug do
       "QUERY_STRING" => conn.query_string,
       "SCRIPT_NAME" => Enum.join(conn.script_name, "/"),
       "REMOTE_ADDR" => get_remote_addr(conn.remote_ip),
-      "REMOTE_PORT" => get_remote_port(conn.peer),
+      "REMOTE_PORT" => get_remote_port(conn),
       "SERVER_ADDR" => "127.0.0.1",
       "SERVER_NAME" => get_hostname(),
       "SERVER_PORT" => conn.port,
@@ -67,7 +67,7 @@ defmodule Bugsnex.Plug do
   end
 
   def get_remote_addr(addr), do: :inet.ntoa(addr) |> List.to_string
-  def get_remote_port({_, port}), do: port
+  def get_remote_port(conn), do: Plug.Conn.get_peer_data(conn).port
 
   def get_hostname do
     Application.get_env(:bugsnex, :hostname) || get_system_hostname()

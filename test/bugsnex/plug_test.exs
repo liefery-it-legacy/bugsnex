@@ -24,7 +24,7 @@ defmodule Bugsnex.PlugTest do
   test "exceptions on a non-existant route are ignored" do
     conn = conn(:get, "/not_found")
 
-    assert %FunctionClauseError{} = catch_error(PlugApp.call conn, [])
+    assert :function_clause = catch_error(PlugApp.call conn, [])
     refute_receive({:notice_sent, _notice})
   end
 
@@ -136,7 +136,7 @@ defmodule Bugsnex.PlugTest do
     Application.put_env(:bugsnex, :hostname, "hostname.local")
     conn = conn(:get, "/bang")
       |> put_req_header("content-type", "application/json")
-    {_, remote_port} = conn.peer
+    remote_port = Plug.Conn.get_peer_data(conn).port
     cgi_data = %{"CONTENT_LENGTH" => [],
                  "ORIGINAL_FULLPATH" => "/bang",
                  "PATH_INFO" => "bang",
