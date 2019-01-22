@@ -1,9 +1,8 @@
 defmodule Bugsnex.Logger do
   import Bugsnex.Util
-  use GenEvent
+  @behaviour :gen_event
 
-
-  def init(_mod, []), do: {:ok, []}
+  def init([]), do: {:ok, []}
 
   def handle_call({:configure, new_keys}, _state) do
     {:ok, :ok, new_keys}
