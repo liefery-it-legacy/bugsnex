@@ -51,8 +51,8 @@ defmodule Bugsnex.Mixfile do
       {:plug_cowboy, "~> 1.0",   only: :test},
       {:phoenix,     "~> 1.1",   only: :test},
       {:bypass,      "~> 0.5.1", only: :test},
-      {:ex_doc,      "~> 0.11",  only: :dev},
-      {:earmark,     "~> 1.0.1", only: :dev},
+      {:ex_doc,      "~> 0.19",  only: :dev},
+      {:earmark,     "~> 1.1",   only: :dev},
     ]
   end
 end
