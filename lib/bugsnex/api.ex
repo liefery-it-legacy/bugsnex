@@ -5,7 +5,7 @@ defmodule Bugsnex.Api do
     base_url() <> path
   end
 
-  defp process_request_headers(headers) do
+  def process_request_headers(headers) do
     [{"Content-Type", "application/json"} | headers]
   end
 
