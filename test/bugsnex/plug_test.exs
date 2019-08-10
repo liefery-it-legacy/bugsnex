@@ -18,6 +18,11 @@ defmodule Bugsnex.PlugTest do
       _ = conn
       raise RuntimeError, "Oops"
     end
+
+    get "/non_important_bang" do
+      _ = conn
+      raise %Plug.BadRequestError{}
+    end
   end
 
 
@@ -40,6 +45,13 @@ defmodule Bugsnex.PlugTest do
     catch_error(PlugApp.call conn, [])
 
     assert_receive({:notice_sent, _notice})
+  end
+
+  test "exceptions that have a plug status of < 500 are ignored" do
+    conn = conn(:get, "/non_important_bang")
+    catch_error(PlugApp.call(conn, []))
+
+    refute_receive({:notice_sent, _notice})
   end
 
   test "sends metadata to bugsnag" do
