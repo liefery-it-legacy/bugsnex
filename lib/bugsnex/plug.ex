@@ -18,6 +18,12 @@ defmodule Bugsnex.Plug do
       end
 
       defp handle_errors(conn, %{kind: _kind, reason: exception, stack: stack}) do
+        do_handle_errors(conn, exception, stack)
+      end
+
+      defp do_handle_errors(_, %{plug_status: status}, _) when status < 500, do: :ok
+
+      defp do_handle_errors(conn, exception, stack) do
         metadata = conn
           |> build_plug_env
           |> Map.merge(Bugsnex.get_metadata())
