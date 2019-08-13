@@ -3,7 +3,7 @@ defmodule Bugsnex.DeployTest do
   alias Bugsnex.Deploy
 
   test "new returns a deploy struct with default parameters" do
-    deploy = Deploy.new
+    deploy = Deploy.new()
     assert deploy.apiKey == "TEST_API_KEY"
     assert deploy.releaseStage == "test_release_stage"
     assert deploy.repository == "the://repository.url"
@@ -15,5 +15,4 @@ defmodule Bugsnex.DeployTest do
     assert deploy.releaseStage == "another_release_stage"
     assert deploy.appVersion == "0.1.2"
   end
-
 end

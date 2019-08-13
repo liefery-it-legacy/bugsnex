@@ -1,5 +1,4 @@
 defmodule Bugsnex.Stacktrace do
-
   def format(stacktrace) do
     Enum.map(stacktrace, &format_line/1)
   end
@@ -9,10 +8,12 @@ defmodule Bugsnex.Stacktrace do
   end
 
   defp format_line({mod, fun, arity, [file: file, line: line]}) do
-    %{file: convert_string(file),
+    %{
+      file: convert_string(file),
       method: Exception.format_mfa(mod, fun, arity),
       lineNumber: line,
-      inProject: otp_app() == get_app(mod)}
+      inProject: otp_app() == get_app(mod)
+    }
   end
 
   defp get_app(module) do

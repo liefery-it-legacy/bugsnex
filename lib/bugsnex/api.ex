@@ -22,5 +22,4 @@ defmodule Bugsnex.Api do
   defp base_url do
     Application.get_env(:bugsnex, :base_url, "https://notify.bugsnag.com")
   end
-
 end
