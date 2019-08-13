@@ -30,11 +30,10 @@ defmodule Bugsnex.NoticeTest do
     assert [exception_data] = event.exceptions
     assert exception_data.errorClass == ArgumentError
     assert exception_data.message == @exception_message
-    assert exception_data.stacktrace == [%{file: nil,
-                                           inProject: false,
-                                           lineNumber: nil,
-                                           method: "TestModule.some_function/2"}]
 
+    assert exception_data.stacktrace == [
+             %{file: nil, inProject: false, lineNumber: nil, method: "TestModule.some_function/2"}
+           ]
   end
 
   test "new notice contains the app data" do
@@ -50,7 +49,11 @@ defmodule Bugsnex.NoticeTest do
   end
 
   test "new notice contains the context of the error if present in the metadata" do
-    notice = Notice.new(@exception, @stacktrace, %{context: "UserSocket->CourierChannel->courier:123->handle_in"})
+    notice =
+      Notice.new(@exception, @stacktrace, %{
+        context: "UserSocket->CourierChannel->courier:123->handle_in"
+      })
+
     assert [event] = notice.events
     assert event.context == "UserSocket->CourierChannel->courier:123->handle_in"
   end
@@ -76,7 +79,7 @@ defmodule Bugsnex.NoticeTest do
 
   test ".device_defaults contains the systems hostname" do
     defaults = Notice.device_defaults(Bugsnex.System)
-    {:ok, hostname} = :inet.gethostname
+    {:ok, hostname} = :inet.gethostname()
     assert defaults == %{host: to_string(hostname)}
   end
 end

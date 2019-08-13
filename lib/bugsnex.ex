@@ -6,7 +6,7 @@ defmodule Bugsnex do
   @api_module Application.get_env(:bugsnex, :api_module, Bugsnex.Api)
 
   def start(_type, _args) do
-    {:ok, task_supervisor_pid} = Task.Supervisor.start_link([name: NotificationTaskSupervisor])
+    {:ok, task_supervisor_pid} = Task.Supervisor.start_link(name: NotificationTaskSupervisor)
 
     if Application.get_env(:bugsnex, :use_logger) do
       :error_logger.add_report_handler(Bugsnex.Logger)
@@ -26,7 +26,9 @@ defmodule Bugsnex do
   end
 
   def notify(exception, stacktrace, metadata) do
-    Task.Supervisor.start_child(NotificationTaskSupervisor, fn -> do_notify(exception, stacktrace, metadata) end)
+    Task.Supervisor.start_child(NotificationTaskSupervisor, fn ->
+      do_notify(exception, stacktrace, metadata)
+    end)
   end
 
   def do_notify(exception, stacktrace, metadata) do
@@ -47,6 +49,7 @@ defmodule Bugsnex do
     map = Enum.into(keyword_list, %{})
     put_metadata(map)
   end
+
   def put_metadata(dict) do
     Process.put(@metadata_key, Map.merge(get_metadata(), dict))
   end
@@ -62,7 +65,7 @@ defmodule Bugsnex do
         unquote(block)
       rescue
         e ->
-          Bugsnex.notify(e, System.stacktrace, unquote(metadata))
+          Bugsnex.notify(e, System.stacktrace(), unquote(metadata))
           raise e
       end
     end

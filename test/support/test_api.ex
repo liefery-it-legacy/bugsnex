@@ -38,6 +38,7 @@ defmodule Bugsnex.TestApi do
     # raise an exception (for testing error case)
     [event] = notice.events
     [exception_data] = event.exceptions
+
     if exception_data.message == "raise_local_error" do
       {:reply, :error, state}
     else

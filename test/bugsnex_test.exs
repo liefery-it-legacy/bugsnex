@@ -6,7 +6,7 @@ defmodule BugsnexTest do
   end
 
   test "notify sends a notice to the api" do
-    stacktrace = [{Stacktrace,  :format, 1, []}]
+    stacktrace = [{Stacktrace, :format, 1, []}]
     exception = %ArgumentError{message: "bad!!"}
     Bugsnex.notify(exception, stacktrace)
 
@@ -24,9 +24,10 @@ defmodule BugsnexTest do
     assert_receive {:notice_sent, notice}
 
     [%{exceptions: [passed_exception]}] = notice.events
+
     assert Enum.any?(passed_exception.stacktrace, fn line ->
-      line.file == "test/bugsnex_test.exs"
-    end)
+             line.file == "test/bugsnex_test.exs"
+           end)
   end
 
   @tag :capture_log
@@ -46,20 +47,24 @@ defmodule BugsnexTest do
 
   test "setting and getting the metadata" do
     Bugsnex.put_metadata(%{user: 123})
-    spawn_link fn ->
+
+    spawn_link(fn ->
       Bugsnex.put_metadata(%{user: 678})
-      assert Bugsnex.get_metadata.user == 678
-    end
-    assert Bugsnex.get_metadata.user == 123
+      assert Bugsnex.get_metadata().user == 678
+    end)
+
+    assert Bugsnex.get_metadata().user == 123
   end
 
   test ".put_metadata works with keyword list (regression)" do
     Bugsnex.put_metadata(foo: "bar")
-    spawn_link fn ->
+
+    spawn_link(fn ->
       Bugsnex.put_metadata(user: 678)
-      assert Bugsnex.get_metadata.user == 678
-    end
-    assert Bugsnex.get_metadata.foo == "bar"
+      assert Bugsnex.get_metadata().user == 678
+    end)
+
+    assert Bugsnex.get_metadata().foo == "bar"
   end
 
   test "track_deploy sends a deploy notification to the api" do
@@ -78,19 +83,25 @@ defmodule BugsnexTest do
 
   test "handle_errors returns the result of the block if no error was raised" do
     require Bugsnex
-    result = Bugsnex.handle_errors do
-      :some_value
-    end
+
+    result =
+      Bugsnex.handle_errors do
+        :some_value
+      end
+
     assert result == :some_value
   end
 
   test "handle_errors sends exception and metadata to bugsnag" do
     require Bugsnex
-    catch_error(fn ->
-      Bugsnex.handle_errors %{some: "metadata"} do
-        raise "an error"
-      end
-    end.())
+
+    catch_error(
+      (fn ->
+         Bugsnex.handle_errors %{some: "metadata"} do
+           raise "an error"
+         end
+       end).()
+    )
 
     assert_receive({:notice_sent, notice})
     [event] = notice.events

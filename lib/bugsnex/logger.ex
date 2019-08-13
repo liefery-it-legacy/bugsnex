@@ -13,13 +13,14 @@ defmodule Bugsnex.Logger do
   end
 
   def handle_event({:error_report, _gl, {_pid, _type, [message | _]}}, state)
-  when is_list(message) do
+      when is_list(message) do
     try do
       error_info = message[:error_info]
 
       case error_info do
         {_kind, {exception, stacktrace}, _stack} when is_list(stacktrace) ->
           Bugsnex.notify(exception, stacktrace)
+
         {_kind, exception, stacktrace} ->
           Bugsnex.notify(exception, stacktrace)
       end
