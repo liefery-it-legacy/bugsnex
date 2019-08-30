@@ -82,4 +82,21 @@ defmodule Bugsnex.NoticeTest do
     {:ok, hostname} = :inet.gethostname()
     assert defaults == %{host: to_string(hostname)}
   end
+
+  test "new notice supports runtime configuration" do
+    old_api_key = Application.get_env(:bugsnex, :api_key)
+    old_release_stage = Application.get_env(:bugsnex, :release_stage)
+
+    Application.put_env(:bugsnex, :api_key, "TEST_API_KEY_OVERRIDE")
+    Application.put_env(:bugsnex, :release_stage, "TEST_RELEASE_STAGE_OVERRIDE")
+
+    notice = Notice.new(@exception, @stacktrace, @metadata)
+    [event] = notice.events
+
+    assert notice.apiKey == "TEST_API_KEY_OVERRIDE"
+    assert event.app.releaseStage == "TEST_RELEASE_STAGE_OVERRIDE"
+
+    Application.put_env(:bugsnex, :api_key, old_api_key)
+    Application.put_env(:bugsnex, :release_stage, old_release_stage)
+  end
 end

@@ -2,12 +2,9 @@ defmodule Bugsnex.Notice do
   alias Bugsnex.Stacktrace
 
   @payload_version "2"
-  @api_key Application.get_env(:bugsnex, :api_key)
-  @release_stage Application.get_env(:bugsnex, :release_stage)
-  @app %{releaseStage: @release_stage}
   @system Application.get_env(:bugsnex, :system_module, Bugsnex.System)
 
-  defstruct apiKey: @api_key,
+  defstruct apiKey: nil,
             notifier: %{
               name: "Bugsnex",
               version: Bugsnex.Mixfile.project()[:version],
@@ -21,7 +18,9 @@ defmodule Bugsnex.Notice do
             metaData: nil
 
   def new(exception, stacktrace, metadata) do
-    %__MODULE__{}
+    %__MODULE__{
+      apiKey: Application.get_env(:bugsnex, :api_key)
+    }
     |> add_event(%{exception: exception, stacktrace: stacktrace, metadata: metadata})
   end
 
@@ -32,7 +31,7 @@ defmodule Bugsnex.Notice do
   def event_data(%{exception: exception, stacktrace: stacktrace, metadata: metadata}) do
     %{
       payloadVersion: @payload_version,
-      app: @app,
+      app: %{releaseStage: Application.get_env(:bugsnex, :release_stage)},
       exceptions: [exception_data(exception, stacktrace)]
     }
     |> add_metadata(metadata)
